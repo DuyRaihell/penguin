@@ -1,0 +1,110 @@
+title = "Videos"
+url = "/videos"
+layout = "default"
+is_hidden = 0
+
+[videoList]
+==
+
+<section class="container">
+    <h1>Videos</h1>
+    <style>
+        .video-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            max-width: 720px;
+            margin: 20px auto;
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Center play overlay */
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .play-overlay:hover {
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .play-icon {
+            font-size: 40px;
+            color: white;
+            pointer-events: none;
+        }
+    </style>
+    <div class="video-grid" style="display:flex;flex-wrap:wrap;gap:20px;">
+        {% for video in videos %}
+        <div class="video-item video-wrapper" style="flex:0 1 45%;">
+            <video id="secureVideo" width="100%" controls>
+                <source id="videoSource" type="video/mp4">
+            </video>
+            <input type="hidden" id="videoName" value="{{  video.url }}">
+            <p>{{ video.name }}</p>
+            <div id="loadVideoBtn" class="play-overlay">
+                <i  class="play-icon">&#9658;</i>
+            </div>
+            
+        </div>
+        {% else %}
+        <p>No videos available.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const btn = document.getElementById('loadVideoBtn');
+        const videoElement = document.getElementById('secureVideo');
+        const videoSource = document.getElementById('videoSource');
+        const filePath = 'videos/2849-163375551_tiny.mp4'; // e.g. videos/2849-163375551_tiny.mp4
+
+        btn.addEventListener('click', async function () {
+            btn.disabled = true;
+            btn.textContent = 'Loading...';
+
+            try {
+                const res = await fetch(`/secure/video/${encodeURIComponent(filePath)}`);
+                const data = await res.json();
+
+                if (data.url) {
+                    // Assign the signed URL dynamically
+                    videoSource.src = data.url;
+                    videoElement.load();
+                    videoElement.play();
+
+                    // Hide the play button
+                    btn.style.display = 'none';
+                } else {
+                    alert('Error: could not load video');
+                    btn.disabled = false;
+                    btn.textContent = '▶ Play';
+                }
+            } catch (err) {
+                console.error('Fetch error:', err);
+                alert('Could not get secure video URL');
+                btn.disabled = false;
+                btn.textContent = '▶ Play';
+            }
+        });
+    });
+</script>
