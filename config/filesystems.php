@@ -48,11 +48,11 @@ return [
 
         'media' => [
             'driver' => 's3',
-            'key'    => 'AKIASL6HXCYI3RMEXRH5',
-            'secret' => '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',
-            'region' => 'ap-southeast-2',
-            'bucket' => 's3-penguin-media',
-            'url' => 'https://s3-ap-southeast-2.amazonaws.com/s3-penguin-media',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => env('AWS_BUCKET'),
+            'url' => env('AWS_URL'),
             'visibility' => 'private',
             'throw' => false
         ],
