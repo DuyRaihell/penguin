@@ -1,0 +1,43 @@
+title = "VNPAY Payment Result"
+url = "/vnpay/return"
+layout = "default"
+
+[session]
+==
+<?php
+use Penguin\Vnpay\Classes\VnpayService;
+
+function onStart()
+{
+    $service = new VnpayService();
+    $this['verified'] = $service->verifyReturn($_GET);
+    $this['responseCode'] = $_GET['vnp_ResponseCode'] ?? null;
+    $this['transactionId'] = $_GET['vnp_TxnRef'] ?? null;
+    $this['amount'] = isset($_GET['vnp_Amount']) ? $_GET['vnp_Amount'] / 100 : null;
+    $this['bankCode'] = $_GET['vnp_BankCode'] ?? null;
+}
+?>
+==
+<div class="container mx-auto mt-10 text-center">
+    {% if verified and responseCode == '00' %}
+        <div class="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg inline-block">
+            <h2 class="text-2xl font-bold mb-2">✅ Payment Successful!</h2>
+            <p class="text-lg">Transaction ID: <strong>{{ transactionId }}</strong></p>
+            <p>Amount: <strong>{{ amount|number_format(0, '.', ',') }} VND</strong></p>
+            <p>Bank: <strong>{{ bankCode }}</strong></p>
+            <a href="/" class="mt-4 inline-block px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">Back to Home</a>
+        </div>
+    {% else %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg inline-block">
+            <h2 class="text-2xl font-bold mb-2">❌ Payment Failed</h2>
+            {% if not verified %}
+                <p>Invalid signature — payment verification failed.</p>
+            {% elseif responseCode %}
+                <p>Error Code: <strong>{{ responseCode }}</strong></p>
+            {% else %}
+                <p>Unknown error occurred.</p>
+            {% endif %}
+            <a href="/" class="mt-4 inline-block px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700">Try Again</a>
+        </div>
+    {% endif %}
+</div>
