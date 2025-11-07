@@ -46,7 +46,7 @@ function onStart()
             <p class="text-lg">Transaction ID: <strong>{{ transactionId }}</strong></p>
             <p>Amount: <strong>{{ amount|number_format(0, '.', ',') }} VND</strong></p>
             <p>Bank: <strong>{{ bankCode }}</strong></p>
-            <a href="{{ 'course/courses'|page }}" class="mt-4 inline-block px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">Back to Courses</a>
+            <a href="{{ 'course/courses'|page }}" class="mt-4 inline-block px-6 py-2 bg-green-600 rounded hover:bg-green-700">Back to Courses</a>
         </div>
     {% else %}
         <div class="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg inline-block">
