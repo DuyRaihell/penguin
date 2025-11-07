@@ -2,6 +2,8 @@
 
 namespace Penguin\Vnpay\Classes;
 
+use Penguin\Ielts\Models\Enrollment;
+
 class VnpayService
 {
     protected $config;
@@ -103,5 +105,21 @@ class VnpayService
         $secureHash = hash_hmac('sha512', $hashData, $vnp_HashSecret);
 
         return hash_equals($secureHash, $vnp_SecureHash);
+    }
+
+    public function cleanEnrollmentId($orderId)
+    {
+        $prefix  = $this->config['vnp_prefix'];
+        if ($prefix && str_starts_with($orderId, $prefix)) {
+            return substr($orderId, strlen($prefix));
+        }
+
+        return $orderId;
+    }
+
+    public function getEnrollment($orderId)
+    {
+        $cleanId = $this->cleanEnrollmentId($orderId);
+        return Enrollment::find($cleanId);
     }
 }
