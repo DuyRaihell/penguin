@@ -13,13 +13,14 @@ class VnpayService
 
     public function createPaymentUrl($orderId, $amount, $orderInfo, $returnUrl = null)
     {
+        $prefix         = $this->config['vnp_prefix'];
         $vnp_Url        = $this->config['vnp_Url'];
         $vnp_ReturnUrl  = $returnUrl ?? $this->config['vnp_ReturnUrl'];
         $vnp_TmnCode    = $this->config['vnp_TmnCode'];
         $vnp_HashSecret = $this->config['vnp_HashSecret'];
         $vnp_ExpireAfter = $this->config['vnp_ExpireAfterMinutes'];
 
-        $vnp_TxnRef = $orderId;
+        $vnp_TxnRef = $prefix.$orderId;
         $vnp_Amount = $amount * 100; // VNPAY uses smallest unit (VND * 100)
         $vnp_OrderInfo = $orderInfo;
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
