@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'vnp_prefix'     => env('VNPAY_PREFIX', ''),
     'vnp_TmnCode'    => env('VNPAY_TMN_CODE', ''),
     'vnp_HashSecret' => env('VNPAY_HASH_SECRET', ''),
     'vnp_Url'        => env('VNPAY_URL', 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'),
