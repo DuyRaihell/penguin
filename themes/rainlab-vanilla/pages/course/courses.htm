@@ -1,0 +1,61 @@
+title = "Courses"
+url = "/courses"
+layout = "default"
+
+[session]
+security = "user"
+redirect = "account/login"
+
+[account]
+isDefault = 1
+
+[courses]
+vars[activeNavLink] = 'courses'
+==
+<?php
+use Penguin\Ielts\Models\Course;
+
+function onStart()
+{
+    $this['courses'] = Course::all();
+}
+?>
+==
+<div class="container">
+    <h1>All IELTS Courses</h1>
+
+    {% if not user %}
+        <p><a href="{{ 'login'|page }}">Login</a> to enroll.</p>
+    {% endif %}
+
+    <div class="courses-grid">
+        {% for course in courses %}
+            <div class="course-item">
+                <h3>{{ course.title }}</h3>
+                <p>{{ course.description|raw }}</p>
+                <p><strong>Price:</strong> {{ course.price|number_format(0, '.', ',') }} VND</p>
+
+                {% if user %}
+                    <form data-request="onEnroll" data-request-data="course_id: {{ course.id }}">
+                        <button class="btn btn-primary">Enroll Now</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% else %}
+            <p>No courses found.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+.course-item {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 8px;
+}
+</style>

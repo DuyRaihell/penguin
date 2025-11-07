@@ -1,0 +1,36 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    title:
+        label: Title
+        type: text
+        span: left
+        required: true
+
+    slug:
+        label: Slug
+        type: text
+        span: right
+        preset:
+            field: title
+            type: slug
+
+    description:
+        label: Description
+        type: richeditor
+        size: giant
+
+    price:
+        label: Price (VND)
+        type: number
+        span: left
+        required: true
+        default: 0
+tabs:
+    fields:
+        enrollments:
+            label: Enrollments
+            type: relation
+            tab: Enrollments

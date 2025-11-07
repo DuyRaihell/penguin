@@ -11,10 +11,10 @@ class VnpayService
         $this->config = config('penguin.vnpay::config');
     }
 
-    public function createPaymentUrl($orderId, $amount, $orderInfo)
+    public function createPaymentUrl($orderId, $amount, $orderInfo, $returnUrl = null)
     {
         $vnp_Url        = $this->config['vnp_Url'];
-        $vnp_ReturnUrl  = $this->config['vnp_ReturnUrl'];
+        $vnp_ReturnUrl  = $returnUrl ?? $this->config['vnp_ReturnUrl'];
         $vnp_TmnCode    = $this->config['vnp_TmnCode'];
         $vnp_HashSecret = $this->config['vnp_HashSecret'];
         $vnp_ExpireAfter = $this->config['vnp_ExpireAfterMinutes'];

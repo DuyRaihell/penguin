@@ -18,7 +18,7 @@ function onStart()
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link {{ activeNavLink == 'account' ? 'active'}}" href="{{ 'account/index'|page }}">Account</a></li>
                 <li class="nav-item"><a class="nav-link {{ activeNavLink == 'profile' ? 'active'}}" href="{{ 'account/profile'|page }}">Profile</a></li>
-                <li class="nav-item"><a class="nav-link {{ activeNavLink == 'forum' ? 'active'}}" href="{{ 'forum/index'|page }}">Forum</a></li>
+                <li class="nav-item"><a class="nav-link {{ activeNavLink == 'courses' ? 'active'}}" href="{{ 'course/courses'|page }}">Courses</a></li>
                 <li class="nav-item"><a class="nav-link {{ activeNavLink == 'videos' ? 'active'}}" href="{{ 'videos'|page }}">Videos</a></li>
             </ul>
             <ul class="navbar-nav navbar-right">
@@ -34,6 +34,7 @@ function onStart()
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ 'forum/member'|page({ slug: null }) }}">View Profile</a></li>
+                            <li><a class="dropdown-item" href="{{ 'my-courses'|page }}" >My courses</a></li>
                             {% if backendUrl %}<li><a class="dropdown-item" href="{{ backendUrl }}" target="backend">Backend Area</a></li>{% endif %}
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#" data-request="onLogout">Logout</a></li>

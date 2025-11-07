@@ -1,0 +1,34 @@
+columns:
+    id:
+        label: ID
+        searchable: true
+        sortable: true
+
+    course:
+        label: Course
+        relation: course
+        select: title
+        searchable: true
+        sortable: true
+
+    user:
+        label: User
+        relation: user
+        select: concat(first_name, ' ', last_name)
+        searchable: true
+        sortable: true
+
+    payment_status:
+        label: Payment Status
+        type: text
+        sortable: true
+
+    paid_at:
+        label: Paid At
+        type: datetime
+        sortable: true
+
+    created_at:
+        label: Created
+        type: datetime
+        sortable: true

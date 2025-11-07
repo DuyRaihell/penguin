@@ -1,0 +1,36 @@
+title = "Payment Return"
+url = "/vnpay/return"
+layout = "default"
+==
+<?php
+use Penguin\Ielts\Models\Enrollment;
+use Penguin\Vnpay\Classes\VnpayService;
+
+function onStart()
+{
+    $vnp = new VnpayService();
+    $params = $_GET;
+
+    if ($vnp->verifyReturn($params)) {
+        $txnRef = $params['vnp_TxnRef'] ?? null;
+        $enrollment = Enrollment::find($txnRef);
+
+        if ($enrollment) {
+            $enrollment->payment_status = 'paid';
+            $enrollment->paid_at = now();
+            $enrollment->save();
+
+            $this['message'] = "Payment successful! You now have access to your course.";
+        } else {
+            $this['message'] = "Enrollment not found.";
+        }
+    } else {
+        $this['message'] = "Payment failed or invalid signature.";
+    }
+}
+?>
+==
+<div class="container">
+    <h2>{{ message }}</h2>
+    <a href="{{ 'courses'|page }}" class="btn btn-primary">Go back to courses</a>
+</div>

@@ -1,0 +1,7 @@
+enrollments:
+    label: Enrollments
+    manage:
+        form: $/penguin/ielts/models/enrollment/fields.yaml
+    view:
+        list: $/penguin/ielts/models/enrollment/columns.yaml
+        toolbarButtons: create|delete

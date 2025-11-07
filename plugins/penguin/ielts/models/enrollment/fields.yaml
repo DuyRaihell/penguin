@@ -1,0 +1,26 @@
+fields:
+    course:
+        label: Course
+        type: relation
+        nameFrom: title
+        span: left
+
+    user:
+        label: User
+        type: relation
+        nameFrom: first_name
+        span: right
+
+    payment_status:
+        label: Payment Status
+        type: dropdown
+        options:
+            pending: Pending
+            paid: Paid
+            failed: Failed
+
+    paid_at:
+        label: Paid At
+        type: datepicker
+        mode: datetime
+        span: left
