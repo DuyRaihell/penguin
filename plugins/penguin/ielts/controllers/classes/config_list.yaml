@@ -1,0 +1,15 @@
+# ===================================
+#  List Configuration
+# ===================================
+
+list: $/penguin/ielts/models/classes/columns.yaml
+modelClass: Penguin\Ielts\Models\ClassModel
+title: Classes
+recordUrl: 'penguin/ielts/classes/update/:id'
+noRecordsMessage: 'No classes found'
+showSetup: true
+showCheckboxes: true
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: Search...

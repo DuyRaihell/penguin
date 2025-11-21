@@ -2,7 +2,7 @@
     <div class="layout-row">
         <?= Form::open(['class' => 'layout stretch']) ?>
             <div class="layout-cell">
-                <?= $this->formRenderDesign() ?>
+                <?= $this->formRenderPreview() ?>
             </div>
         <?= Form::close() ?>
     </div>

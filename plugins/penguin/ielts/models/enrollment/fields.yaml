@@ -11,6 +11,12 @@ fields:
         nameFrom: first_name
         span: right
 
+    class:
+        label: Class
+        type: relation
+        nameFrom: name
+        span: left
+
     payment_status:
         label: Payment Status
         type: dropdown

@@ -2,6 +2,9 @@
 
 namespace Penguin\Ielts;
 
+use Backend;
+use Event;
+use BackendAuth;
 use System\Classes\PluginBase;
 
 class Plugin extends PluginBase
@@ -27,6 +30,10 @@ class Plugin extends PluginBase
                 'tab' => 'IELTS',
                 'label' => 'Access and manage enrollments',
             ],
+            'penguin.ielts.access_classes' => [
+                'tab' => 'IELTS',
+                'label' => 'Access and manage classes',
+            ],
         ];
     }
 
@@ -37,15 +44,25 @@ class Plugin extends PluginBase
                 'label'       => 'IELTS',
                 'url'         => \Backend::url('penguin/ielts/courses'),
                 'icon'        => 'icon-graduation-cap',
-                'permissions' => ['penguin.ielts.*'],
+                'permissions' => [
+                    'penguin.ielts.access_courses',
+                    'penguin.ielts.access_classes',
+                    'penguin.ielts.access_enrollments'
+                ],
                 'order'       => 500,
 
                 'sideMenu' => [
                     'courses' => [
                         'label'       => 'Courses',
-                        'icon'        => 'icon-book',
+                        'icon'        => 'icon-graduation-cap',
                         'url'         => \Backend::url('penguin/ielts/courses'),
                         'permissions' => ['penguin.ielts.access_courses']
+                    ],
+                    'classes' => [
+                        'label'       => 'Classes',
+                        'icon'        => 'icon-book',
+                        'url'         => \Backend::url('penguin/ielts/classes'),
+                        'permissions' => ['penguin.ielts.access_classes']
                     ]
                 ]
             ]
@@ -60,5 +77,21 @@ class Plugin extends PluginBase
             'Penguin\Ielts\Components\MyCourses' => 'myCourses',
             'Penguin\Ielts\Components\PaymentReturn' => 'paymentReturn',
         ];
+    }
+
+    public function boot()
+    {
+        Event::listen('backend.menu.extendItems', function ($manager) {
+
+            $user = BackendAuth::getUser();
+            if (!$user) {
+                return;
+            }
+
+            // Show Settings only for super admin
+            if (!$user->is_superuser) {
+                $manager->removeMainMenuItem('October.System', 'system');
+            }
+        });
     }
 }

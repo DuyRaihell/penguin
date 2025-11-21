@@ -15,7 +15,7 @@ class Courses extends Controller
     public $formConfig = 'config_form.yaml';
     public $relationConfig = 'config_relation.yaml';
 
-    // public $requiredPermissions = ['penguin.ielts.access_courses'];
+    public $requiredPermissions = ['penguin.ielts.access_courses'];
 
     public function __construct()
     {

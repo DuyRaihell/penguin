@@ -1,0 +1,8 @@
+enrollments:
+    label: Enrollments
+    view:
+        list: $/penguin/ielts/models/enrollment/columns.yaml
+        toolbarButtons: create|delete
+    manage:
+        form: $/penguin/ielts/models/enrollment/fields.yaml
+        recordsPerPage: 10

@@ -28,9 +28,42 @@ fields:
         span: left
         required: true
         default: 0
+    max_in_class:
+        label: Students per Class 
+        type: number
+        span: right
+        default: 20
 tabs:
+    icons: 
+        Students: icon-users
+        Lessions: icon-book
     fields:
         enrollments:
-            label: Enrollments
+            label: Students
             type: relation
-            tab: Enrollments
+            tab: Students
+           
+        lessions:
+            label: Lessions
+            tab: Lessions
+            type: repeater
+            prompt: Add Lession
+            form:
+                fields:
+                    title:
+                        label: Lession Title
+                        type: text
+                        span: left
+                        required: true
+
+                    description:
+                        label: Description
+                        type: textarea
+                        size: tiny
+                        span: right
+
+                    document:
+                        label: Upload Document
+                        type: mediafinder
+                        span: full
+                        mode: file

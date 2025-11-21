@@ -16,5 +16,13 @@ class Enrollment extends Model
     public $belongsTo = [
         'user' => [User::class],
         'course' => [Course::class],
+        'class' => [ClassModel::class],
     ];
+
+    public function isUserInClass($userId, $classId)
+    {
+        return self::where('user_id', $userId)
+            ->where('class_id', $classId)
+            ->exists();
+    }
 }

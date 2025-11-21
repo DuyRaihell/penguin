@@ -1,0 +1,36 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    name:
+        label: Name
+        type: text
+        span: left
+        required: true
+
+    assistant:
+        label: Assistant
+        type: relation
+        nameFrom: full_name
+        select: id
+        placeholder: "Select assistant"
+        span: right
+        options: getAssistantOptions
+    max_members:
+        label: Max Memembers
+        type: number
+        span: left
+
+    current_members:
+        label: Current Members
+        type: number
+        span: right
+tabs:
+    icons: 
+        Students: icon-users
+    fields:
+        enrollments:
+            label: Students
+            type: relation
+            tab: Students
