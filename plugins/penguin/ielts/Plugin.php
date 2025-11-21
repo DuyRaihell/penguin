@@ -81,6 +81,27 @@ class Plugin extends PluginBase
 
     public function boot()
     {
+        \Event::listen('backend.page.beforeDisplay', function ($controller, $action, $params) {
+
+            $user = \BackendAuth::getUser();
+            if (!$user) {
+                return;
+            }
+
+            // If request is exactly /admin
+            $path = \Request::path();
+            if ($path === 'backend' || $path === 'admin') {
+
+                // User has only access_classes
+                $hasClasses = $user->hasPermission('penguin.ielts.access_classes');
+                $hasCourses = $user->hasPermission('penguin.ielts.access_courses');
+
+                if ($hasClasses && !$hasCourses) {
+                    return \Redirect::to(\Backend::url('penguin/ielts/classes'));
+                }
+            }
+        });
+        
         Event::listen('backend.menu.extendItems', function ($manager) {
 
             $user = BackendAuth::getUser();
