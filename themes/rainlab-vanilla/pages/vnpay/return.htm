@@ -42,7 +42,7 @@ function onStart()
             ]);
 
             // Assign user to class
-            $classService = new Penguin\Ielts\Classes\ClassAssignmentService();
+            $classService = new ClassAssignmentService();
             // ensure we use the enrollment's course id
             $courseId = $enrollment->course_id;
             $class = $classService->getClass($courseId);
