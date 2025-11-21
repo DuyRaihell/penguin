@@ -43,14 +43,14 @@ function onStart()
 
             // Assign user to class
             $classService = new Penguin\Ielts\Classes\ClassAssignmentService();
-            $class = $classService->getClass($courseId)
+            $class = $classService->getClass($enrollment->course_id);
             
             if(!$enrollment->isUserInClass($enrollment->user_id, $class->id)) {
                 $enrollment->update(['class_id' => $class->id]);
                 $classService->assignUserToClass($enrollment->course_id);
             }
             
-            $this['message'] = "✅Payment successful! You’ve been enrolled in <strong>{$enrollment->course->title}</strong>.";
+            $this['message'] = "Payment successful! You've been enrolled in <strong>{$enrollment->course->title}</strong>.";
             $this['className'] = $class->name;
         } else {
             $this['message'] = "Enrollment not found for transaction ID: {$txnRef}.";

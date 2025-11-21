@@ -36,7 +36,7 @@ class ClassAssignmentService
             $class = ClassModel::create([
                 'course_id' => $courseId,
                 'name' => "{$course->title} - Class {$classNumber}",
-                'max_members' => $course->max_in_class ?? 20,
+                'max_members' => $course->max_in_class ?? 20,   
                 'current_members' => 0,
             ]);
         }
