@@ -1,0 +1,47 @@
+title = "Course Details"
+url = "/course/:id"
+layout = "default"
+==
+<?php
+use Penguin\Ielts\Models\Course;
+use Penguin\Ielts\Models\Enrollment;
+use RainLab\User\Facades\Auth;
+
+function onStart()
+{
+    $user = Auth::getUser();
+    $courseId = $this->param('id');
+    $course = Course::find($courseId);
+    $this['course'] = $course;
+
+    if (!$course) {
+        return Redirect::to('/courses');
+    }
+
+    $this['canAccess'] = false;
+
+    if ($user) {
+        $enrollment = Enrollment::where('user_id', $user->id)
+            ->where('course_id', $course->id)
+            ->where('payment_status', 'paid')
+            ->first();
+
+        if ($enrollment) {
+            $this['canAccess'] = true;
+        }
+    }
+}
+?>
+==
+<div class="container">
+    <h1>{{ course.title }}</h1>
+
+    {% if canAccess %}
+        <div class="content">
+            {{ course.content|raw }}
+        </div>
+    {% else %}
+        <p>You must enroll and pay to access this course.</p>
+        <a href="{{ 'courses'|page }}" class="btn btn-primary">Go back</a>
+    {% endif %}
+</div>

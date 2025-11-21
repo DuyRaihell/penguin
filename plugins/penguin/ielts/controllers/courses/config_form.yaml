@@ -1,0 +1,18 @@
+# ===================================
+#  Form Configuration
+# ===================================
+
+name: Course
+modelClass: Penguin\Ielts\Models\Course
+form: $/penguin/ielts/models/course/fields.yaml
+defaultRedirect: penguin/ielts/courses
+toolbar:
+    buttons: form_toolbar
+create:
+    title: Create Course
+    redirect: 'penguin/ielts/courses/update/:id'
+    redirectClose: penguin/ielts/courses
+update:
+    title: Edit Course
+    redirect: penguin/ielts/courses
+    redirectClose: penguin/ielts/courses

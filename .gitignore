@@ -28,3 +28,5 @@ nbproject
 /vendor
 /vendor_drm
 /modules
+
+plugins/october

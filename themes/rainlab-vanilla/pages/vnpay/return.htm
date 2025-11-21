@@ -1,0 +1,94 @@
+title = "VNPAY Payment Result"
+url = "/vnpay/return"
+layout = "default"
+
+[session]
+==
+<?php
+use Penguin\Vnpay\Classes\VnpayService;
+use Penguin\Ielts\Models\Enrollment;
+use Penguin\Ielts\Classes\ClassAssignmentService;
+use Illuminate\Support\Facades\Config;
+
+function onStart()
+{
+    $service = new VnpayService();
+    $params = $_GET;
+    $this['verified'] = $service->verifyReturn($params);
+
+    $txnRef = $params['vnp_TxnRef'] ?? null;
+    $prefix = Config::get('penguin.vnpay::vnp_prefix', '');
+
+    // Remove prefix if exists
+    if ($prefix && str_starts_with($txnRef, $prefix)) {
+        $txnRef = substr($txnRef, strlen($prefix));
+    }
+
+    $this['transactionId'] = $txnRef;
+    $this['responseCode'] = $params['vnp_ResponseCode'] ?? null;
+    $this['amount'] = isset($params['vnp_Amount']) ? $params['vnp_Amount'] / 100 : null;
+    $this['bankCode'] = $params['vnp_BankCode'] ?? null;
+
+    // Payment validation
+    if ($this['verified'] && $this['responseCode'] === '00') {
+        $enrollment = Enrollment::find($txnRef);
+
+        if ($enrollment) {
+            // Update payment status
+            $enrollment->update([
+                'payment_status' => 'paid',
+                'transaction_code' => $params['vnp_ResponseCode'] ?? null,
+                'paid_at' => now(),
+            ]);
+
+            // Assign user to class
+            $classService = new Penguin\Ielts\Classes\ClassAssignmentService();
+            $class = $classService->getClass($courseId)
+            
+            if(!$enrollment->isUserInClass($enrollment->user_id, $class->id)) {
+                $enrollment->update(['class_id' => $class->id]);
+                $classService->assignUserToClass($enrollment->course_id);
+            }
+            
+            $this['message'] = "✅Payment successful! You’ve been enrolled in <strong>{$enrollment->course->title}</strong>.";
+            $this['className'] = $class->name;
+        } else {
+            $this['message'] = "Enrollment not found for transaction ID: {$txnRef}.";
+        }
+    } else {
+        $this['message'] = "Payment failed or invalid signature.";
+    }
+}
+?>
+==
+<div class="container mx-auto mt-10 text-center">
+    {% if verified and responseCode == '00' %}
+        <div class="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg inline-block">
+            <h2 class="text-2xl font-bold mb-2">Payment Successful!</h2>
+            <p class="text-lg mb-2">{{ message|raw }}</p>
+
+            {% if className %}
+                <p>You’ve been assigned to <strong>{{ className }}</strong>.</p>
+            {% endif %}
+
+            <p>Transaction ID: <strong>{{ transactionId }}</strong></p>
+            <p>Amount: <strong>{{ amount|number_format(0, '.', ',') }} VND</strong></p>
+            <p>Bank: <strong>{{ bankCode }}</strong></p>
+
+            <a href="{{ 'course/my-courses'|page }}" class="mt-4 inline-block px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                Go to My Courses
+            </a>
+        </div>
+    {% else %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg inline-block">
+            <h2 class="text-2xl font-bold mb-2">Payment Failed</h2>
+            <p>{{ message|raw }}</p>
+            {% if responseCode %}
+                <p>Error Code: <strong>{{ responseCode }}</strong></p>
+            {% endif %}
+            <a href="{{ 'course/courses'|page }}" class="mt-4 inline-block px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                Try Again
+            </a>
+        </div>
+    {% endif %}
+</div>

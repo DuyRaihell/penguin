@@ -1,0 +1,26 @@
+# ===================================
+#  Form Configuration
+# ===================================
+
+name: Classes
+modelClass: Penguin\Ielts\Models\ClassModel
+form: $/penguin/ielts/models/classes/fields.yaml
+defaultRedirect: penguin/ielts/classes
+toolbar:
+    buttons: form_toolbar
+create:
+    title: Create Classes
+    redirect: 'penguin/ielts/classes/update/:id'
+    redirectClose: penguin/ielts/classes
+update:
+    title: Edit Classes
+    redirect: penguin/ielts/classes
+    redirectClose: penguin/ielts/classes
+
+assistant_id:
+    label: Assistant
+    type: relation
+    nameFrom: full_name      # show full name of backend user
+    select: id
+    placeholder: "Select assistant"
+    scope: assistantRole     #
