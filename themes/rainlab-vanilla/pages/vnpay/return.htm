@@ -42,41 +42,16 @@ function onStart()
             ]);
 
             // Assign user to class
-            $classService = new ClassAssignmentService();
-            // ensure we use the enrollment's course id
-            $courseId = $enrollment->course_id;
-            $class = $classService->getClass($courseId);
-
-            // safety: only proceed if a class was found
-            if ($class) {
-                // If the enrollment model provides an isUserInClass check, use it; otherwise assume not in class
-                $inClass = method_exists($enrollment, 'isUserInClass')
-                    ? $enrollment->isUserInClass($enrollment->user_id, $class->id)
-                    : false;
-
-                if (!$inClass) {
-                    $enrollment->update(['class_id' => $class->id]);
-
-                    // try to call assignUserToClass with (user_id, class_id) if available, fall back to previous call
-                    if (method_exists($classService, 'assignUserToClass')) {
-                        // prefer (userId, classId) signature if that's supported
-                        try {
-                            $classService->assignUserToClass($enrollment->user_id, $class->id);
-                        } catch (\ArgumentCountError $e) {
-                            // fallback: call with course_id as before
-                            $classService->assignUserToClass($enrollment->course_id);
-                        } catch (\Throwable $e) {
-                            // swallow to avoid breaking the flow; log if needed
-                        }
-                    }
-                }
-
-                $this['className'] = $class->name;
-            } else {
-                $this['className'] = null;
+            $classService = new Penguin\Ielts\Classes\ClassAssignmentService();
+            $class = $classService->getClass($courseId)
+            
+            if(!$enrollment->isUserInClass($enrollment->user_id, $class->id)) {
+                $enrollment->update(['class_id' => $class->id]);
+                $classService->assignUserToClass($enrollment->course_id);
             }
-
+            
             $this['message'] = "✅Payment successful! You’ve been enrolled in <strong>{$enrollment->course->title}</strong>.";
+            $this['className'] = $class->name;
         } else {
             $this['message'] = "Enrollment not found for transaction ID: {$txnRef}.";
         }
