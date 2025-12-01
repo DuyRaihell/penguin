@@ -18,13 +18,11 @@ function onStart()
     $this['user'] = $user;
 
     if ($user) {
-        // eager load course and its lessions so documents are available in the template
         $enrollments = Enrollment::with('course.lessions')
             ->where('user_id', $user->id)
             ->where('payment_status', 'paid')
             ->get();
 
-        // compute full document URL for each lesson using AWS_URL
         $awsUrl = env('AWS_URL') ?: '';
         $enrollments->each(function($enroll) use ($awsUrl) {
             if ($enroll->course && $enroll->course->lessions) {
@@ -74,12 +72,37 @@ function onStart()
                                             {% if l.full_document %}
                                                 <a href="{{ l.full_document }}" class="btn btn-xs btn-outline-primary" target="_blank" download>Download</a>
                                             {% elseif l.document %}
-                                                {# fallback to raw document value if full_document missing #}
                                                 <a href="{{ l.document }}" class="btn btn-xs btn-outline-primary" target="_blank" download>Download</a>
                                             {% endif %}
                                         </li>
                                     {% endfor %}
                                 </ul>
+                            </div>
+                        {% endif %}
+
+                        {# Render course videos if any #}
+                        {% if enroll.course.videos is defined and enroll.course.videos|length %}
+                            <div class="course-videos mt-3">
+                                <strong>Videos:</strong>
+                                <div class="video-grid" style="display:flex;flex-wrap:wrap;gap:20px;">
+                                    {% for video in enroll.course.videos %}
+                                        <div class="video-item video-wrapper" style="flex:0 1 45%;position:relative;">
+                                            <video id="secureVideo-{{ enroll.id }}-{{ loop.index }}" width="100%" controls style="height: 269px; border-radius:12px;box-shadow:0 0 12px rgba(0,0,0,0.2);">
+                                                <source id="videoSource-{{ enroll.id }}-{{ loop.index }}" type="video/mp4">
+                                            </video>
+                                            <input type="hidden" id="videoName-{{ enroll.id }}-{{ loop.index }}" value="{{ video.video_url }}">
+                                            <p>{{ video.name }}</p>
+                                            <div id="videoError-{{ enroll.id }}-{{ loop.index }}" style="color:red;margin-top:8px;"></div>
+                                            <button 
+                                                id="loadVideoBtn-{{ enroll.id }}-{{ loop.index }}" 
+                                                class="play-btn" 
+                                                type="button"
+                                                style="margin-top:10px;padding:10px 24px;border-radius:8px;background:#007bff;color:#fff;border:none;cursor:pointer;font-size:18px;">
+                                                ▶ Play
+                                            </button>
+                                        </div>
+                                    {% endfor %}
+                                </div>
                             </div>
                         {% endif %}
                     </li>
@@ -93,3 +116,67 @@ function onStart()
         <p>Please <a href="{{ 'login'|page }}">login</a> to see your courses.</p>
     {% endif %}
 </div>
+
+<style>
+    .video-wrapper video {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 12px;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+    }
+    .play-btn:hover {
+        background: #0056b3;
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('[id^="loadVideoBtn-"]').forEach(function(btn) {
+            btn.addEventListener('click', async function () {
+                btn.disabled = true;
+                btn.textContent = 'Loading...';
+
+                var id = btn.id.replace('loadVideoBtn-', '');
+                var videoElement = document.getElementById('secureVideo-' + id);
+                var videoSource = document.getElementById('videoSource-' + id);
+                var videoNameInput = document.getElementById('videoName-' + id);
+                var filePath = videoNameInput ? videoNameInput.value : '';
+                var errorMsg = document.getElementById('videoError-' + id);
+                if (errorMsg) errorMsg.textContent = '';
+
+                // Helper for fetch timeout
+                function fetchWithTimeout(resource, options = {}) {
+                    const { timeout = 10000 } = options;
+                    const controller = new AbortController();
+                    const id = setTimeout(() => controller.abort(), timeout);
+                    return fetch(resource, {
+                        ...options,
+                        signal: controller.signal  
+                    }).finally(() => clearTimeout(id));
+                }
+
+                try {
+                    const res = await fetchWithTimeout(`/secure/video/${encodeURIComponent(filePath)}`, { timeout: 10000 });
+                    if (!res.ok) throw new Error('Network error');
+                    const data = await res.json();
+
+                    if (data.url) {
+                        videoSource.src = data.url;
+                        videoElement.load();
+                        videoElement.play().catch(function() {
+                            if (errorMsg) errorMsg.textContent = 'Video could not be played.';
+                        });
+                        btn.textContent = '▶ Play Again';
+                    } else {
+                        if (errorMsg) errorMsg.textContent = 'Error: could not load video.';
+                        btn.textContent = '▶ Play Again';
+                    }
+                } catch (err) {
+                    if (errorMsg) errorMsg.textContent = 'Could not get secure video URL or request timed out.';
+                    btn.textContent = '▶ Play Again';
+                }
+                btn.disabled = false;
+            });
+        });
+    });
+</script>

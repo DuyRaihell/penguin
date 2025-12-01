@@ -34,19 +34,17 @@ function onStart()
         $enrollment = Enrollment::find($txnRef);
 
         if ($enrollment) {
-            // Update payment status
-            $enrollment->update([
-                'payment_status' => 'paid',
-                'transaction_code' => $params['vnp_ResponseCode'] ?? null,
-                'paid_at' => now(),
-            ]);
-
             // Assign user to class
             $classService = new Penguin\Ielts\Classes\ClassAssignmentService();
             $class = $classService->getClass($enrollment->course_id);
             
             if(!$enrollment->isUserInClass($enrollment->user_id, $class->id)) {
-                $enrollment->update(['class_id' => $class->id]);
+                $enrollment->update([
+                    'payment_status' => 'paid',
+                    'class_id' => $class->id,
+                    'transaction_code' => $params['vnp_ResponseCode'] ?? null,
+                    'paid_at' => now(),
+                ]);
                 $classService->assignUserToClass($enrollment->course_id);
             }
             

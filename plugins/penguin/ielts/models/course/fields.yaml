@@ -37,6 +37,7 @@ tabs:
     icons: 
         Students: icon-users
         Lessions: icon-book
+        Videos: icon-videos
     fields:
         enrollments:
             label: Students
@@ -64,6 +65,24 @@ tabs:
 
                     document:
                         label: Upload Document
+                        type: mediafinder
+                        span: full
+                        mode: file
+        videos:
+            label: Videos
+            tab: Videos
+            type: repeater
+            prompt: Add Video
+            form:
+                fields:
+                    title:
+                        label: Video Title
+                        type: text
+                        span: left
+                        required: true
+
+                    video_url:
+                        label: Video
                         type: mediafinder
                         span: full
                         mode: file

@@ -15,3 +15,6 @@ v1.0.4:
 v1.0.5: 
     - Add max enrollments to course
     - add_max_enrollments_to_course.php
+v1.0.6: 
+    - Add Video to course
+    - add_videos_to_course.php

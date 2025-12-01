@@ -11,7 +11,7 @@ class Enrollment extends Model
         'course_id' => 'required',
         'payment_status' => 'required',
     ];
-    protected $fillable = ['user_id', 'course_id', 'payment_status', 'transaction_code', 'paid_at'];
+    protected $fillable = ['user_id', 'course_id', 'class_id', 'payment_status', 'transaction_code', 'paid_at'];
 
     public $belongsTo = [
         'user' => [User::class],
