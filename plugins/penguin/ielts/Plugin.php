@@ -6,6 +6,8 @@ use Backend;
 use Event;
 use BackendAuth;
 use System\Classes\PluginBase;
+use Dashboard\Classes\DashManager;
+use Penguin\Ielts\Reports\PaidCourseDataSource;
 
 class Plugin extends PluginBase
 {
@@ -114,5 +116,10 @@ class Plugin extends PluginBase
                 $manager->removeMainMenuItem('October.System', 'system');
             }
         });
+
+        DashManager::instance()->registerDataSourceClass(
+            PaidCourseDataSource::class,
+            'Paid Course Revenue'
+        );
     }
 }

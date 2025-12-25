@@ -18,7 +18,7 @@ class Course extends Model
     protected $fillable = ['title', 'description', 'price', 'slug'];
 
     public $hasMany = [
-        'enrollments' => [Enrollment::class],
+        'enrollments' => [Enrollment::class, 'key' => 'course_id'],
         'lessions'    => [Lession::class],
     ];
 }

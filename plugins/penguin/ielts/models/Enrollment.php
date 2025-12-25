@@ -15,7 +15,7 @@ class Enrollment extends Model
 
     public $belongsTo = [
         'user' => [User::class],
-        'course' => [Course::class],
+        'course' => [Course::class, 'key' => 'course_id'],
         'class' => [ClassModel::class],
     ];
 
