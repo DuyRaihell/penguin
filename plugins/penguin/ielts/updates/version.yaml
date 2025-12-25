@@ -5,7 +5,6 @@ v1.0.1:
 v1.0.2: 
     - Create CLasses Table
     - create_classes_table.php
-    - add_class_id_to_enrollments.php
 v1.0.3: 
     - Add class id to enrollments
     - add_class_id_to_enrollments.php
