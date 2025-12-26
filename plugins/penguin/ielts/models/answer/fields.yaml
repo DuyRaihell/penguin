@@ -1,0 +1,8 @@
+fields:
+    answer:
+        label: Answer
+        span: full
+
+    is_correct:
+        label: Correct Answer
+        type: checkbox

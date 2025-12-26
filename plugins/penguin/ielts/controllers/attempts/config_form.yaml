@@ -1,0 +1,36 @@
+name: Attempt
+modelClass: Penguin\Ielts\Models\Attempt
+
+form:
+    fields:
+        test:
+            label: Test
+            relation: test
+            select: title
+            disabled: true
+
+        user:
+            label: User
+            nameFrom: first_name
+            type: relation
+            disabled: true
+
+        started_at:
+            label: Started At
+            type: datepicker
+            mode: datetime
+            disabled: true
+
+        submitted_at:
+            label: Submitted At
+            type: datepicker
+            mode: datetime
+            disabled: true
+
+    tabs:
+        fields:
+            answers:
+                label: Answers
+                type: partial
+                path: $/penguin/ielts/controllers/attempts/_answers.htm
+                tab: Answers

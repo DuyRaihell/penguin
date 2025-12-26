@@ -1,0 +1,29 @@
+fields:
+    test:
+        label: Test
+        type: relation
+        nameFrom: title
+        span: full
+
+    section:
+        label: Section
+        type: dropdown
+        options:
+            listening: Listening
+            grammar: Grammar
+            writing: Writing
+            speaking: Speaking
+
+    question:
+        label: Question
+        type: textarea
+
+    audio:
+        label: Listening Audio
+        type: mediafinder
+        mode: file
+        fileTypes: mp3,wav
+        trigger:
+            action: show
+            field: section
+            condition: value[listening]

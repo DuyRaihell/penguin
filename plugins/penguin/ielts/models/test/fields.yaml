@@ -1,0 +1,21 @@
+tabs:
+    fields:
+
+        title:
+            label: Test Title
+            span: left
+            type: text
+            tab: General
+        slug:
+            label: Slug
+            type: text
+            span: right
+            tab: General
+            preset:
+                field: title
+                type: slug
+        questions:
+            label: Questions
+            type: partial
+            path: $/penguin/ielts/controllers/tests/_questions.htm
+            tab: Questions

@@ -1,0 +1,39 @@
+url = "/ielts-tests/:slug"
+layout = "default"
+title = "Take Test"
+
+[ieltsTests]
+slug = "{{ :slug }}"
+
+[session]
+security = "user"
+redirect = "/login"
+==
+{% set test = ieltsTests.test() %}
+
+<h1>{{ test.title }}</h1>
+
+<form data-request="onSubmitTest" enctype="multipart/form-data">
+    {% for question in test.questions %}
+    <p><strong>{{ loop.index }}. {{ question.question }}</strong></p>
+
+    {% if question.answer_type == 'choice' %}
+    {% for answer in question.answers %}
+    <label>
+        <input type="radio" name="answers[{{ question.id }}]" value="{{ answer.id }}">
+        {{ answer.answer }}
+    </label><br>
+    {% endfor %}
+
+    {% elseif question.answer_type == 'text' %}
+    <textarea name="answers_text[{{ question.id }}]"></textarea>
+
+    {% elseif question.answer_type == 'file' %}
+    <input type="file" name="answers_file[{{ question.id }}]">
+    {% endif %}
+    {% endfor %}
+
+    <button type="submit">Submit</button>
+</form>
+
+<div id="test-result"></div>

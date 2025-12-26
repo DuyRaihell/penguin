@@ -1,0 +1,24 @@
+<?php foreach ($formModel->answers as $answer): ?>
+    <div style="margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid #ddd">
+
+        <strong>Q:</strong>
+        <?= e($answer->question->question) ?><br>
+
+        <?php if ($answer->answer): ?>
+            <strong>Choice:</strong>
+            <?= e($answer->answer->answer) ?>
+
+        <?php elseif ($answer->answer_text): ?>
+            <strong>Text:</strong><br>
+            <pre><?= e($answer->answer_text) ?></pre>
+
+        <?php elseif ($answer->answer_file): ?>
+            <strong>File:</strong><br>
+            <a target="_blank"
+               href="<?= Storage::disk('s3')->temporaryUrl($answer->answer_file, now()->addMinutes(30)) ?>">
+                Download file
+            </a>
+        <?php endif; ?>
+
+    </div>
+<?php endforeach; ?>

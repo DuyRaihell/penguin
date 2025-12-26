@@ -36,6 +36,22 @@ class Plugin extends PluginBase
                 'tab' => 'IELTS',
                 'label' => 'Access and manage classes',
             ],
+            'penguin.ielts.access_tests' => [
+                'tab'   => 'IELTS',
+                'label' => 'Manage IELTS Tests'
+            ],
+            'penguin.ielts.access_questions' => [
+                'tab'   => 'IELTS',
+                'label' => 'Manage IELTS Questions'
+            ],
+            'penguin.ielts.access_attempts' => [
+                'tab'   => 'IELTS',
+                'label' => 'View Student Attempts'
+            ],
+            'penguin.ielts.grade_writing_speaking' => [
+                'tab'   => 'IELTS',
+                'label' => 'Grade Writing & Speaking'
+            ]
         ];
     }
 
@@ -65,7 +81,34 @@ class Plugin extends PluginBase
                         'icon'        => 'icon-book',
                         'url'         => \Backend::url('penguin/ielts/classes'),
                         'permissions' => ['penguin.ielts.access_classes']
-                    ]
+                    ],
+                    'tests' => [
+                        'label'       => 'Tests',
+                        'icon'        => 'icon-list',
+                        'url'         => \Backend::url('penguin/ielts/tests'),
+                        'permissions' => ['penguin.ielts.access_tests']
+                    ],
+
+                    'questions' => [
+                        'label'       => 'Questions',
+                        'icon'        => 'icon-question-circle',
+                        'url'         => \Backend::url('penguin/ielts/questions'),
+                        'permissions' => ['penguin.ielts.access_questions']
+                    ],
+
+                    'attempts' => [
+                        'label'       => 'Attempts',
+                        'icon'        => 'icon-users',
+                        'url'         => \Backend::url('penguin/ielts/attempts'),
+                        'permissions' => ['penguin.ielts.access_attempts']
+                    ],
+
+                    // 'grading' => [
+                    //     'label'       => 'Grading',
+                    //     'icon'        => 'icon-check-square-o',
+                    //     'url'         => \Backend::url('penguin/ielts/grading'),
+                    //     'permissions' => ['penguin.ielts.grade_writing_speaking']
+                    // ]
                 ]
             ]
         ];
@@ -78,6 +121,7 @@ class Plugin extends PluginBase
             'Penguin\Ielts\Components\Courses' => 'courses',
             'Penguin\Ielts\Components\MyCourses' => 'myCourses',
             'Penguin\Ielts\Components\PaymentReturn' => 'paymentReturn',
+            'Penguin\Ielts\Components\Tests' => 'ieltsTests',
         ];
     }
 
