@@ -1,0 +1,24 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    id:
+        label: ID
+        searchable: true
+        sortable: true
+        width: 80px
+
+    title:
+        label: Title
+        searchable: true
+
+    price:
+        label: Price (VND)
+        type: number
+        sortable: true
+
+    created_at:
+        label: Created
+        type: datetime
+        format: Y-m-d H:i

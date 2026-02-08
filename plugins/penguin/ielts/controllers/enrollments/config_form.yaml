@@ -1,0 +1,19 @@
+modelClass: Penguin\Ielts\Models\Enrollment
+form:
+    fields:
+        user:
+            label: User
+            type: relation
+        course:
+            label: Course
+            type: relation
+        payment_status:
+            label: Payment Status
+            type: dropdown
+            options:
+                pending: Pending
+                paid: Paid
+        paid_at:
+            label: Paid At
+            type: datetimepicker
+

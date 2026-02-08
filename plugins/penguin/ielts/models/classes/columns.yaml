@@ -1,0 +1,36 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    id:
+        label: ID
+        searchable: true
+        sortable: true
+        width: 80px
+
+    name:
+        label: Name
+        searchable: true
+
+    course_id:
+        label: Course
+        relation: course
+        select: title
+        type: text
+        sortable: true
+
+    max_members:
+        label: Max Members
+        type: number
+        sortable: true
+
+    current_members:
+        label: Current
+        type: number
+        sortable: true
+
+    created_at:
+        label: Created
+        type: datetime
+        format: Y-m-d H:i

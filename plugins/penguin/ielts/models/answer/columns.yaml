@@ -1,0 +1,7 @@
+columns:
+    answer:
+        label: Answer
+
+    is_correct:
+        label: Correct
+        type: switch

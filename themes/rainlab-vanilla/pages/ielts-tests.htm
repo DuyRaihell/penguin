@@ -1,0 +1,25 @@
+title = "IELTS Tests"
+url = "/ielts-tests"
+layout = "default"
+[ieltsTests]
+
+[session]
+security = "user"
+redirect = "/login"
+==
+<h1>IELTS Tests</h1>
+
+<ul class="test-list">
+    {% for test in ieltsTests.tests() %}
+        <li>
+            <a href="{{ 'test'|page({ slug: test.slug }) }}">
+                {{ test.title }}
+            </a>
+            <small>
+                ({{ test.questions_count }} questions)
+            </small>
+        </li>
+    {% else %}
+        <li>No tests available</li>
+    {% endfor %}
+</ul>

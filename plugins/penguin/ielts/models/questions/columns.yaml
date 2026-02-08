@@ -1,0 +1,19 @@
+columns:
+    id:
+        label: ID
+        searchable: true
+        sortable: true
+
+    section:
+        label: Section
+        sortable: true
+
+    question:
+        label: Question
+        searchable: true
+        type: text
+
+    created_at:
+        label: Created
+        type: datetime
+        sortable: true

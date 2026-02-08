@@ -115,6 +115,6 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'asia/ho_chi_minh',
 
 ];

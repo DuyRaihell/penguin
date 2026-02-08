@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Test
+
+# Model Form Field configuration
+form: $/penguin/ielts/models/test/fields.yaml
+
+# Model Class name
+modelClass: Penguin\Ielts\Models\Test
+
+# Default redirect location
+defaultRedirect: penguin/ielts/tests
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: penguin/ielts/tests/update/:id
+    redirectClose: penguin/ielts/tests
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: penguin/ielts/tests
+    redirectClose: penguin/ielts/tests
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title

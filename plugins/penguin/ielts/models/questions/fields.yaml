@@ -1,0 +1,44 @@
+fields:
+    test:
+        label: Test
+        type: relation
+        nameFrom: title
+        span: full
+    answer_type:
+        label: Answer Type
+        type: dropdown
+        options: getAnswerTypeOptions
+        span: auto
+
+    section:
+        label: Section
+        type: dropdown
+        options:
+            listening: Listening
+            grammar: Grammar
+            writing: Writing
+            speaking: Speaking
+
+    question:
+        label: Question
+        type: textarea
+
+    audio:
+        label: Listening Audio
+        type: mediafinder
+        mode: file
+        fileTypes: mp3,wav
+        trigger:
+            action: show
+            field: section
+            condition: value[listening]
+    answers:
+        label: Answers
+        type: partial
+        path: $/penguin/ielts/controllers/questions/_answers.htm
+        tab: Answers
+        trigger:
+            action: show
+            field: section
+            condition: value[listening]|value[grammar]
+

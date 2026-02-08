@@ -1,0 +1,32 @@
+title: Test Attempts
+modelClass: Penguin\Ielts\Models\Attempt
+recordUrl: penguin/ielts/attempts/update/:id
+
+list:
+    columns:
+        id:
+            label: ID
+            width: 80
+
+        test:
+            label: Test
+            relation: test
+            select: title
+
+        user:
+            label: User
+            relation: user
+            select: email
+            default: Guest
+
+        started_at:
+            label: Started
+            type: datetime
+
+        submitted_at:
+            label: Submitted
+            type: datetime
+
+        created_at:
+            label: Created
+            type: datetime

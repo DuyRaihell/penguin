@@ -1,0 +1,9 @@
+questions:
+    label: Questions
+    view:
+        list: $/penguin/ielts/models/questions/columns.yaml
+        toolbarButtons: add|remove
+    manage:
+        list: $/penguin/ielts/models/questions/columns.yaml
+        showSearch: true
+        showCheckboxes: true

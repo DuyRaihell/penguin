@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Grading
+
+# Model Form Field configuration
+form: $/penguin/ielts/models/grading/fields.yaml
+
+# Model Class name
+modelClass: Penguin\Ielts\Models\Grading
+
+# Default redirect location
+defaultRedirect: penguin/ielts/grading
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: penguin/ielts/grading/update/:id
+    redirectClose: penguin/ielts/grading
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: penguin/ielts/grading
+    redirectClose: penguin/ielts/grading
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title
