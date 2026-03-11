@@ -25,8 +25,13 @@ redirect = "/login"
     </label><br>
     {% endfor %}
 
+    {% elseif question.answer_type == 'textarea' %}
+    <div class="editor-container">
+        <textarea class="rich-editor" name="answers_textarea[{{ question.id }}]"></textarea>
+    </div>
+
     {% elseif question.answer_type == 'text' %}
-    <textarea name="answers_text[{{ question.id }}]"></textarea>
+    <input name="answers_text[{{ question.id }}]"></input>
 
     {% elseif question.answer_type == 'file' %}
     <input type="file" name="answers_file[{{ question.id }}]">

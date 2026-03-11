@@ -35,6 +35,8 @@ function onStart()
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ 'forum/member'|page({ slug: null }) }}">View Profile</a></li>
                             <li><a class="dropdown-item" href="{{ 'my-courses'|page }}" >My courses</a></li>
+                            <li><a class="dropdown-item" href="{{ 'ielts-tests'|page }}" >Ielts Test</a></li>
+                            <li><a class="dropdown-item" href="{{ 'attempts'|page }}" >Attempts</a></li>
                             {% if backendUrl %}<li><a class="dropdown-item" href="{{ backendUrl }}" target="backend">Backend Area</a></li>{% endif %}
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#" data-request="onLogout">Logout</a></li>

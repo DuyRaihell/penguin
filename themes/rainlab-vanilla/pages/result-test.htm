@@ -1,0 +1,55 @@
+url = "/result-test/:id"
+layout = "default"
+title = "Result Test"
+
+[testResult]
+id = "{{ :id }}"
+
+[session]
+security = "user"
+redirect = "/login"
+==
+
+<!-- Result page: shows score, percentage, timestamps and teacher comments for each answer -->
+<section class="test-result">
+    {% if attempt %}
+        {% set testTitle = (attempt.test is defined and attempt.test) ? (attempt.test.title|default(attempt.test.name|default('Test'))) : 'Test' %}
+        <h1>{{ testTitle }} — Result</h1>
+
+        <p>Started: {{ attempt.started_at ? attempt.started_at|date('Y-m-d H:i') : '—' }}</p>
+        <p>Submitted: {{ attempt.submitted_at ? attempt.submitted_at|date('Y-m-d H:i') : '—' }}</p>
+
+        <h2>Answers</h2>
+        <ul class="answers">
+            {% for answer in attempt.answers %}
+                <li class="answer-item">
+                    <div class="question">
+                        <strong>Q{{ loop.index }}:</strong>
+                        {{ answer.question.title ?: answer.question.text ?: 'Question' }}
+                    </div>
+
+                    <div class="user-answer">
+                        <em>Answer:</em>
+                        {{ answer.answer.answer }}
+                    </div>
+                    <div class="user-answer">
+                        <em>Correct:</em>
+                        {{ answer.correct_answer }}
+                    </div>
+                    <div class="teacher-comment">
+                        <em>Teacher comment:</em>
+                        {% if answer.comment %}
+                            {{ answer.comment|raw }}
+                        {% else %}
+                            <span class="no-comment">No comment</span>
+                        {% endif %}
+                    </div>
+                </li>
+            {% else %}
+                <li>No answers recorded.</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No result found.</p>
+    {% endif %}
+</section>

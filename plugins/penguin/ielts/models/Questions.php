@@ -30,6 +30,7 @@ class Questions extends Model
         return [
             'choice' => 'Multiple Choice',
             'text'   => 'Text Input',
+            'textarea'   => 'Text Area',
             'file'   => 'File Upload',
         ];
     }

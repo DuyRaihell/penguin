@@ -122,6 +122,8 @@ class Plugin extends PluginBase
             'Penguin\Ielts\Components\MyCourses' => 'myCourses',
             'Penguin\Ielts\Components\PaymentReturn' => 'paymentReturn',
             'Penguin\Ielts\Components\Tests' => 'ieltsTests',
+            'Penguin\Ielts\Components\TestResult' => 'testResult',
+            'Penguin\Ielts\Components\AttemptsList' => 'attemptsList',
         ];
     }
 

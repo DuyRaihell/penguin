@@ -19,6 +19,8 @@
                 Download file
             </a>
         <?php endif; ?>
-
+        <br>
+        <strong>Comment:</strong><br>
+        <textarea name="answers[<?= $answer->id ?>][comment]" style="width:100%;" rows="3"><?= e($answer->comment) ?></textarea>
     </div>
 <?php endforeach; ?>

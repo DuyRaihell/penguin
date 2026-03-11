@@ -108,14 +108,44 @@ class Tests extends ComponentBase
             $attemptAnswer->attempt_id  = $attemptId;
             $attemptAnswer->question_id = $question->id;
 
+            // default to not correct
+            $isCorrect = 0;
+
             // 1️⃣ Multiple choice
             if ($question->answer_type === 'choice') {
-                $attemptAnswer->answer_id = post('answers')[$question->id] ?? null;
+                $selectedId = post('answers')[$question->id] ?? null;
+                $attemptAnswer->answer_id = $selectedId;
+
+                if ($selectedId) {
+                    $selected = $question->answers->firstWhere('id', $selectedId);
+                    if ($selected && ($selected->is_correct ?? false)) {
+                        $isCorrect = 1;
+                    }
+                }
             }
 
             // 2️⃣ Text input
             if ($question->answer_type === 'text') {
-                $attemptAnswer->answer_text = post('answers_text')[$question->id] ?? null;
+                $text = post('answers_text')[$question->id] ?? null;
+                $attemptAnswer->answer_text = $text;
+
+                if ($text !== null && $question->answers && $question->answers->count()) {
+                    // try to find an explicitly flagged correct answer
+                    $correctAnswer = $question->answers->firstWhere('is_correct', true);
+                    if ($correctAnswer) {
+                        $correctText = $correctAnswer->answer_text ?? $correctAnswer->text ?? null;
+                        if ($correctText !== null && strtolower(trim($correctText)) === strtolower(trim($text))) {
+                            $isCorrect = 1;
+                        }
+                    } else {
+                        // fallback: compare to first answer text if available
+                        $first = $question->answers->first();
+                        $firstText = $first->answer_text ?? $first->text ?? null;
+                        if ($firstText !== null && strtolower(trim($firstText)) === strtolower(trim($text))) {
+                            $isCorrect = 1;
+                        }
+                    }
+                }
             }
 
             if (
@@ -123,16 +153,31 @@ class Tests extends ComponentBase
                 && Input::hasFile("answers_file.{$question->id}")
             ) {
                 $file = Input::file("answers_file.{$question->id}");
-            
+
                 // Upload to S3
                 $path = Storage::disk('s3')->putFile(
                     'ielts_attempts',
                     $file,
                     'private' // or 'public'
                 );
-            
+
                 $attemptAnswer->answer_file = $path;
+
+                // files are not auto-graded by default
+                $isCorrect = 0;
             }
+
+            // Save the correct answer text when the answer is correct
+            $attemptAnswer->correct_answer = null;
+            $correct = $question->answers->firstWhere('is_correct', 1);
+            if ($correct) {
+                $attemptAnswer->correct_answer = $correct->answer ?? null;
+            } elseif (isset($selected) && $selected) {
+                // fallback to the selected choice text if available
+                $attemptAnswer->correct_answer = $selected->answer ?? null;
+            }
+
+            $attemptAnswer->is_correct = $isCorrect;
 
             $attemptAnswer->save();
         }

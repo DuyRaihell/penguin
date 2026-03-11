@@ -36,3 +36,9 @@ v1.0.12:
   - create attempts table
   - create_attempts_table.php
   - add_answer_type_to_questions.php
+v1.0.14:
+  - add comment
+  - add_comment_to_attempt.php
+v1.0.15:
+  - add correct answer
+  - add_correct_answer_to_attempt_answers.php

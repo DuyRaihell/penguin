@@ -1,0 +1,28 @@
+url = "/attempts"
+layout = "default"
+title = "Attempts"
+
+[attemptsList]
+
+[session]
+security = "user"
+redirect = "/login"
+==
+
+<section class="attempts-list">
+    {% if attempts and attempts|length %}
+        <h1>Attempts</h1>
+        <ul>
+            {% for attempt in attempts %}
+                {% set testTitle = (attempt.test is defined and attempt.test) ? (attempt.test.title|default(attempt.test.name|default('Test'))) : 'Test' %}
+                <li class="attempt-item">
+                    <strong>{{ testTitle }}</strong>
+                    — Submitted: {{ attempt.submitted_at ? attempt.submitted_at|date('Y-m-d H:i') : '—' }}
+                    <a href="{{ 'result-test'|page({ id: attempt.id }) }}">View result</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No attempts found.</p>
+    {% endif %}
+</section>

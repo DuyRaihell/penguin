@@ -32,4 +32,31 @@ class Attempt extends Model
     public $hasMany = [
         'answers' => AttemptAnswer::class,
     ];
+
+    public function beforeSave()
+    {
+        $posted = post('answers');
+        if (!is_array($posted)) {
+            return;
+        }
+
+        foreach ($posted as $id => $fields) {
+            if (!isset($fields['comment'])) {
+                continue;
+            }
+
+            $attemptAnswer = AttemptAnswer::find($id);
+            if (!$attemptAnswer) {
+                continue;
+            }
+
+            // if this attempt already exists, ensure the answer belongs to it
+            if ($this->id && isset($attemptAnswer->attempt_id) && $attemptAnswer->attempt_id != $this->id) {
+                continue;
+            }
+
+            $attemptAnswer->comment = $fields['comment'];
+            $attemptAnswer->save();
+        }
+    }
 }
